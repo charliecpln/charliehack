@@ -20,7 +20,7 @@ CharlieHack is a powerful multi-functional security tool designed for ethical ha
   - **File encrypt/decrypt**  
   - **Google Dorking**
  
-** AND MORE! **  
+**AND MORE!**  
 
 ## Table of Contents
 
