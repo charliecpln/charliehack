@@ -28,8 +28,6 @@ CharlieHack is a powerful multi-functional security tool designed for ethical ha
 - [Technologies](#technologies)
 - [Installation](#installation)
 - [Usage](#usage)
-- [Contributing](#contributing)
-- [License](#license)
 - [Contact](#contact)
 
 ## Technologies
@@ -66,10 +64,6 @@ To get started with CharlieHack, follow these steps:
 Upon running the application, you will be presented with a menu of options:  
 
 Follow the prompts to navigate through the features.  
-
-## License
-
-This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.  
 
 ## Contact
 
