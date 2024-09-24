@@ -56,7 +56,7 @@ To get started with CharlieHack, follow these steps:
 2. **Run the Application**:
    Start the application with:
    ```bash
-   sudo python charliehack.py
+   sudo ./charliehack.py
    ```
 
 ## Usage
