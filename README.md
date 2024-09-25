@@ -12,13 +12,19 @@ CharlieHack is a powerful multi-functional security tool designed for ethical ha
   - **Directory Scanner**  
   - **Port Scanner**  
   - **Admin Panel Finder**  
-  - **Dns/Ip Query**  
-- **Discord Tools**  
-  - **Discord Nitro Generator & Checker**  
+  - **Dns/Ip Query**
+  - **Web Downloader**  
+- **Discord Tools**
   - **Discord DM Spammer**  
+  - **Discord Nitro Generator & Checker**  
+  - **Discord Server Crashing**  
 - **Other Tools**  
   - **File encrypt/decrypt**  
-  - **Google Dorking**
+  - **Google Dorking**  
+  - **Password Manager**
+- **Random Generate Tools**
+  - **Random Credit Card Generator & Checker**
+  - **Random ID Generator**  
  
 **AND MORE!**  
 
@@ -56,7 +62,7 @@ To get started with CharlieHack, follow these steps:
 2. **Run the Application**:
    Start the application with:
    ```bash
-   sudo ./charliehack.py
+   sudo python charliehack.py
    ```
 
 ## Usage
@@ -69,7 +75,6 @@ Follow the prompts to navigate through the features.
 
 For inquiries or feedback, please reach out:  
 
-- **@charliecpln**  
 - **GitHub**: [charliecpln](https://github.com/charliecpln)  
 - **Telegram**: [charliecpln](https://t.me/charliecpln)  
 - **Discord**: @charliecpln  
