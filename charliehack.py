@@ -63,7 +63,6 @@ from discord.ext import commands
 from bs4 import BeautifulSoup
 from faker import Faker
 
-# COLORAMANIN BAŞLANGICI
 init(autoreset=True)
 
 banner = Style.BRIGHT + Fore.LIGHTRED_EX + """
